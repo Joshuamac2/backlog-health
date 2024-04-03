@@ -11,7 +11,7 @@ function TotalChart() {
   useEffect(() => {
     const fetchAvailable = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/api/available`);
+        const response = await fetch(`https://backlog-health-server.vercel.app/api/available`);
         if (!response.ok) {
           throw new Error('Network response for available data was not ok');
         }
@@ -25,7 +25,7 @@ function TotalChart() {
 
     const fetchAwaiting = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/api/awaiting`);
+        const response = await fetch(`https://backlog-health-server.vercel.app/api/awaiting`);
         if (!response.ok) {
           throw new Error('Network response for awaiting data was not ok');
         }
@@ -39,7 +39,7 @@ function TotalChart() {
 
     const fetchBlocked = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/api/blocked`);
+        const response = await fetch(`https://backlog-health-server.vercel.app/api/blocked`);
         if (!response.ok) {
           throw new Error('Network response for blocked data was not ok');
         }
