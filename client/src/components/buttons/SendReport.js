@@ -15,7 +15,7 @@ function SendReport() {
         throw new Error("Please enter a valid email address");
       }
   
-      const response = await fetch(`http://localhost:4000/api/send-report`, {
+      const response = await fetch(`https://backlog-health-server.vercel.app/api/send-report`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
