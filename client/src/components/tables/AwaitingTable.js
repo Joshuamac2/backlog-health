@@ -13,7 +13,7 @@ function AwaitingTable() {
   useEffect(() => {
     const fetchAwaiting = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/api/awaiting-table`);
+        const response = await fetch(`https://backlog-health-server.vercel.app/api/awaiting-table`);
         if (!response.ok) {
           throw new Error("Network response for awaiting data was not ok");
         }
