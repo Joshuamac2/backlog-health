@@ -13,7 +13,7 @@ function App() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/authenticate', {
+      const response = await fetch('https://backlog-health-server.vercel.app/api/authenticate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
