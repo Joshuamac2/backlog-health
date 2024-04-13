@@ -6,6 +6,12 @@ const app = express();
 const SECRET_KEY = '12345';
 
 app.use(cors());
+app.use(express.json()); 
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://backlog-health.vercel.app');
+    next();
+});
 
 const getCheckMood = require('./routes/getCheckMood');
 const getAvailableData = require('./routes/getAvailableData');
@@ -22,11 +28,6 @@ app.use('/api', getBlockedData);
 app.use('/api', getTotalData);
 app.use('/api', postAuthenticate);
 app.use('/api', postSendReport);
-
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://backlog-health.vercel.app');
-    next();
-});
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
