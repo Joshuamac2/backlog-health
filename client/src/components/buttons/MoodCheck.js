@@ -34,7 +34,7 @@ function MoodCheck() {
   return (
     <div>
       <div>
-        <Button onClick={handleShowModal} style={{ width: '50%', backgroundColor: '#E70127', borderColor: '#E70127', fontWeight: 'bold' }}>Check Mood</Button>
+        <Button onClick={handleShowModal} style={{ width: '50%', backgroundColor: '#E70127', borderColor: '#E70127', fontWeight: 'bold' }}>Check Heath</Button>
       </div>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton style={{ backgroundColor: "#0F415A", color: "white" }}>

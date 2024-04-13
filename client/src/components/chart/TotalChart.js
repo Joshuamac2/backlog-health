@@ -3,58 +3,51 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { IoBarChart } from "react-icons/io5";
 
 function TotalChart() {
-  const [available, setAvailable] = useState(null);
+  const [availableData, setAvailableData] = useState([]);
   const [awaiting, setAwaiting] = useState(null);
   const [blocked, setBlocked] = useState(null);
-  const [error, setError] = useState(null); 
+  const [totalStoryPoints, setTotalStoryPoints] = useState(0);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchAvailable = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`https://backlog-health-server.vercel.app/api/available`);
-        if (!response.ok) {
-          throw new Error('Network response for available data was not ok');
-        }
-        const data = await response.json();
-        setAvailable(data); 
+        const [availableResponse, awaitingResponse, blockedResponse] = await Promise.all([
+          fetch(process.env.REACT_APP_FETCH_AVAILABLE),
+          fetch(process.env.REACT_APP_FETCH_AWAITING),
+          fetch(process.env.REACT_APP_FETCH_BLOCKED)
+        ]);
+    
+        const availableJson = await availableResponse.json();
+        const awaitingJson = await awaitingResponse.json();
+        const blockedJson = await blockedResponse.json();
+        
+        setAvailableData(availableJson);
+        setAwaiting(awaitingJson);
+        setBlocked(blockedJson);
+    
+        const total = sumStoryPoints(availableJson);
+        setTotalStoryPoints(total);
       } catch (error) {
-        console.error('Error fetching available data:', error);
+        console.error('Error fetching data:', error);
         setError(error);
       }
     };
 
-    const fetchAwaiting = async () => {
-      try {
-        const response = await fetch(`https://backlog-health-server.vercel.app/api/awaiting`);
-        if (!response.ok) {
-          throw new Error('Network response for awaiting data was not ok');
-        }
-        const data = await response.json();
-        setAwaiting(data); 
-      } catch (error) {
-        console.error('Error fetching awaiting data:', error);
-        setError(error);
-      }
-    };
+    fetchData();
+  }, []);
 
-    const fetchBlocked = async () => {
-      try {
-        const response = await fetch(`https://backlog-health-server.vercel.app/api/blocked`);
-        if (!response.ok) {
-          throw new Error('Network response for blocked data was not ok');
-        }
-        const data = await response.json();
-        setBlocked(data); 
-      } catch (error) {
-        console.error('Error fetching blocked data:', error);
-        setError(error);
-      }
-    };
+  function sumStoryPoints(data) {
+    let totalStoryPoints = 0;
+  
+    for (const item of data.availableData) {
+      totalStoryPoints += item.storyPoints;
+    }
 
-    fetchAvailable();
-    fetchAwaiting();
-    fetchBlocked();
-  }, []); 
+    return totalStoryPoints;
+  }
+
+  console.log(totalStoryPoints)
 
   return (
     <div style={{ width: "100%" }}>
@@ -69,23 +62,27 @@ function TotalChart() {
       </div>
 
       {error && <div>Error: {error.message}</div>}
-      <BarChart
-        xAxis={[{ scaleType: 'band', data: ['Available', 'Pending Client', 'Blocked'] }]}
-        series={[{ data: [available, awaiting, blocked] }]}
-        width={650}
-        height={270}
-        sx={{
-          "& .MuiBarElement-root:nth-of-type(1)": {
-            fill: "#0F415A",
-          },
-          "& .MuiBarElement-root:nth-of-type(2)": {
-            fill: "#E70127",
-          },
-          "& .MuiBarElement-root:nth-of-type(3)": {
-            fill: "#E70127",
-          },
-        }}
-      />
+      {totalStoryPoints !== null && (
+        <BarChart
+          xAxis={[{ scaleType: 'band', data: ['Available', 'Pending Client', 'Blocked'] }]}
+          series={[{ data: [totalStoryPoints, awaiting, blocked] }]} 
+          width={650}
+          height={450}
+          sx={{
+            "& .MuiBarElement-root:nth-of-type(1)": {
+              fill: "#0F415A",
+            },
+            "& .MuiBarElement-root:nth-of-type(2)": {
+              fill: "#E70127",
+            },
+            "& .MuiBarElement-root:nth-of-type(3)": {
+              fill: "#E70127",
+            },
+          }}
+        />
+      )}
+
+      <div style={{ fontWeight: 'bold' }}>Total Story Points: {totalStoryPoints + awaiting + blocked}</div>
     </div>
   );
 }

@@ -20,7 +20,6 @@ async function awaitingApprovalTable() {
                     <th style="padding: 8px; border: 1px solid #1D425A; text-align: left;">Story Points</th>
                 </tr>`;
       
-      // Check if data is available before iterating
       if (getAwaitingApprovalData) {
         getAwaitingApprovalData.forEach((row, index) => {
           const jiraUrl = `https://redantinternal.atlassian.net/browse/${row.key}`;

@@ -2,7 +2,7 @@ const {
   getTotalBlockedStoryPoints,
 } = require("./getStoryPoints/getBlockedStoryPoints");
 const {
-  getTotalAvailableStoryPoints,
+  getAvailableSPRData, calculateTotalStoryPoints
 } = require("./getStoryPoints/getAvailableStoryPoints");
 const {
   getTotalAwaitingStoryPoints,
@@ -11,13 +11,10 @@ const ChartJsImage = require("chartjs-to-image");
 
 async function generateChartImage() {
   try {
-    const totalAvailableStoryPointsPromise = getTotalAvailableStoryPoints();
-    const totalBlockedStoryPointsPromise = getTotalBlockedStoryPoints();
-    const totalAwaitingStoryPointsPromise = getTotalAwaitingStoryPoints();
-
-    const totalAvailableStoryPoints = await totalAvailableStoryPointsPromise;
-    const totalBlockedStoryPoints = await totalBlockedStoryPointsPromise;
-    const totalAwaitingStoryPoints = await totalAwaitingStoryPointsPromise;
+    const availableData = await getAvailableSPRData(); 
+    const totalAvailableStoryPoints = await calculateTotalStoryPoints(availableData); 
+    const totalBlockedStoryPoints = await getTotalBlockedStoryPoints();
+    const totalAwaitingStoryPoints = await getTotalAwaitingStoryPoints();
 
     const myChart = new ChartJsImage();
     myChart.setConfig({
@@ -30,7 +27,7 @@ async function generateChartImage() {
         ],
         datasets: [
           {
-            label: "Blocked Story Points",
+            label: "Story Points",
             data: [totalBlockedStoryPoints, totalAwaitingStoryPoints, totalAvailableStoryPoints],
             backgroundColor: ["#EC1D24", "#EC1D24", "#1D425A"],
           },
@@ -40,11 +37,14 @@ async function generateChartImage() {
 
     const url = await myChart.getShortUrl();
 
-    console.log("Chart image generated and saved successfully.", url);
+    // console.log("Chart image generated and saved successfully.", url);
     return url;
   } catch (error) {
     console.error("Error generating chart image:", error);
+    throw error; 
   }
 }
 
-module.exports = generateChartImage;
+module.exports = {
+  generateChartImage
+};

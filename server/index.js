@@ -3,19 +3,24 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const SECRET_KEY = '12345';
 
 app.use(cors());
 
 const getCheckMood = require('./routes/getCheckMood');
+const getAvailableData = require('./routes/getAvailableData');
 const getAwaitingData = require('./routes/getAwaitingData');
 const getBlockedData = require('./routes/getBlockedData');
 const getTotalData = require('./routes/getTotalData');
+const postAuthenticate = require('./routes/postAuthenticate');
 const postSendReport = require('./routes/postSendReport');
 
 app.use('/api', getCheckMood);
+app.use('/api', getAvailableData);
 app.use('/api', getAwaitingData);
 app.use('/api', getBlockedData);
 app.use('/api', getTotalData);
+app.use('/api', postAuthenticate);
 app.use('/api', postSendReport);
 
 const PORT = process.env.PORT || 4000;

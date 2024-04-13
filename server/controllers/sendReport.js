@@ -1,7 +1,8 @@
 require("dotenv").config();
-const generateChartImage = require("./generateChartImage");
+const {generateChartImage} = require("./generateChartImage");
 const blockedTable = require("./tables/blockedTable.js");
 const awaitingApprovalTable = require("./tables/awaitingApprovalTable.js");
+const { getTotalStoryPoints } = require("./getStoryPoints/getTotalStoryPoints.js");
 
 const Sib = require("sib-api-v3-sdk");
 const { TransactionalEmailsApi } = require("sib-api-v3-sdk");
@@ -23,6 +24,7 @@ async function sendReport(email) {
     const chartImageUrl = await generateChartImage();
     const blockedTableHTML = await blockedTable();
     const awaitingClientTableHTML = await awaitingApprovalTable();
+    const awaitingTotalData = await getTotalStoryPoints(); 
 
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleString();
@@ -39,11 +41,12 @@ async function sendReport(email) {
             <!-- Description -->
             <h2>Weekly Backlog Health Report - Generated on ${formattedDate}</h2>
             <p>
-            This is your weekly backlog health report. Below, you'll find key metrics on our backlog status. We track available story points for sprints and the total number of blocked story points. "Blocked story points" represent tasks awaiting client input, while "Awaiting Client Approvals" are tickets ready for client review, but have not signed off yet. Additionally, we highlight available story points for the up and comming sprints. For more details, refer to the tables with links to blocked and awaiting client approval Jira stories.
+            This is your weekly backlog health report. Below, you'll find key metrics on our backlog status. We track available story points for sprints and the total number of blocked story points. "Blocked story points" represent tasks awaiting client input, while "Awaiting Client Approvals" are tickets ready for client review, but have not signed off yet. Additionally, we highlight available story points for the up and coming sprints. For more details, refer to the tables with links to blocked and awaiting client approval Jira stories.
             </p>
+            <br></br>
 
             <!-- Bar Chart Header -->
-            <h3>Backlog Health Overview</h3>
+            <h3>Total Story Points: ${awaitingTotalData}</h3>
 
             <!-- Bar Chart Placeholder -->
             <div>
@@ -82,8 +85,6 @@ async function sendReport(email) {
       subject: `Weekly Backlog Health Report - Generated on ${formattedDate}`,
       htmlContent,
     });
-
-    console.log(receiver)
 
     console.log("Message sent successfully:", response);
   } catch (error) {

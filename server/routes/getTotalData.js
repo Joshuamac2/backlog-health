@@ -4,10 +4,13 @@ const getAvailableSPR = require('../controllers/getStoryPoints/getAvailableStory
 const getAwaitingSPR = require('../controllers/getStoryPoints/getAwaitingApproval');
 const getBlockedSPR = require('../controllers/getStoryPoints/getBlockedStoryPoints');
 
+
 router.get('/available', async (req, res) => {
     try {
-        const data = await getAvailableSPR.getTotalAvailableStoryPoints();
-        res.status(200).json(data); 
+        const availableData = await getAvailableSPR.getAvailableSPRData();
+        const totalStoryPoints = getAvailableSPR.calculateTotalStoryPoints(availableData);
+
+        res.status(200).json({ totalStoryPoints, availableData });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Internal Server Error' });

@@ -19,6 +19,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-google-charts": "^4.0.1",
+    "react-js-pagination": "^3.0.3",
     "react-scripts": "^5.0.1",
     "react-toastify": "^10.0.5",
     "sib-api-v3-sdk": "^8.5.0",
