@@ -23,6 +23,11 @@ app.use('/api', getTotalData);
 app.use('/api', postAuthenticate);
 app.use('/api', postSendReport);
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://backlog-health.vercel.app');
+    next();
+});
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
