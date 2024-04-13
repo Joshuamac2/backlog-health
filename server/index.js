@@ -3,13 +3,14 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const SECRET_KEY = '12345';
 
 app.use(cors());
 app.use(express.json()); 
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://backlog-health.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
 
