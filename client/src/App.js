@@ -9,42 +9,16 @@ function App() {
   const [secret, setSecret] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const response = await fetch('https://backlog-health-server.vercel.app/api/authenticate', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ secret }),
-  //     });
-  //     const data = await response.json();
-  //     if (data.success) {
-  //       setAuthenticated(true);
-  //     } else {
-  //       alert('Invalid secret key');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      // Parse the secret to an integer
-      const secretNumber = parseInt(secret, 10);
-  
       const response = await fetch('https://backlog-health-server.vercel.app/api/authenticate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // Send the secretNumber instead of the string secret
-        body: JSON.stringify({ secret: secretNumber }),
+        body: JSON.stringify({ secret }),
       });
       const data = await response.json();
       if (data.success) {
@@ -56,6 +30,32 @@ function App() {
       console.error('Error:', error);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   try {
+  //     // Parse the secret to an integer
+  //     const secretNumber = parseInt(secret, 10);
+  
+  //     const response = await fetch('https://backlog-health-server.vercel.app/api/authenticate', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       // Send the secretNumber instead of the string secret
+  //       body: JSON.stringify({ secret: secretNumber }),
+  //     });
+  //     const data = await response.json();
+  //     if (data.success) {
+  //       setAuthenticated(true);
+  //     } else {
+  //       alert('Invalid secret key');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
   
 
   return (
