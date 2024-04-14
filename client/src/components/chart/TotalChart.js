@@ -12,15 +12,15 @@ function TotalChart() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [availableResponse, awaitingResponse, blockedResponse] = await Promise.all([
-          fetch(process.env.REACT_APP_FETCH_AVAILABLE),
-          fetch(process.env.REACT_APP_FETCH_AWAITING),
+        const [totalAvailableResponse, totalAwaitingResponse, totalBlockedResponse] = await Promise.all([
+          fetch(process.env.REACT_APP_FETCH_TOTAL_AVAILABLE),
+          fetch(process.env.REACT_APP_FETCH_TOTAL_AWAITING),
           fetch(process.env.REACT_APP_FETCH_BLOCKED)
         ]);
     
-        const availableJson = await availableResponse.json();
-        const awaitingJson = await awaitingResponse.json();
-        const blockedJson = await blockedResponse.json();
+        const availableJson = await totalAvailableResponse.json();
+        const awaitingJson = await totalAwaitingResponse.json();
+        const blockedJson = await totalBlockedResponse.json();
         
         setAvailableData(availableJson);
         setAwaiting(awaitingJson);
@@ -46,8 +46,6 @@ function TotalChart() {
 
     return totalStoryPoints;
   }
-
-  console.log(totalStoryPoints)
 
   return (
     <div style={{ width: "100%" }}>
