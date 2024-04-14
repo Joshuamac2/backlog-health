@@ -37,7 +37,6 @@ async function generateChartImage() {
 
     const url = await myChart.getShortUrl();
 
-    // console.log("Chart image generated and saved successfully.", url);
     return url;
   } catch (error) {
     console.error("Error generating chart image:", error);

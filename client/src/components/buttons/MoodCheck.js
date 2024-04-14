@@ -9,7 +9,7 @@ function MoodCheck() {
   useEffect(() => {
     const fetchAvailableTotal = async () => {
       try {
-        const response = await fetch(`https://backlog-health-server.vercel.app/api/check-mood`);
+        const response = await fetch(process.env.REACT_APP_FETCH_CHECK_MOOD);
         if (!response.ok) {
           throw new Error('Network response for available data was not ok');
         }

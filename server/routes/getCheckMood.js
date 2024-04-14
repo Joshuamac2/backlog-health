@@ -4,8 +4,10 @@ const getAvailableTotal = require('../controllers/getStoryPoints/getAvailableSto
 
 router.get('/check-mood', async (req, res) => {
     try {
-        const data = await getAvailableTotal.getTotalAvailableStoryPoints();
-        res.status(200).json(data); 
+        const availableData = await getAvailableTotal.getAvailableSPRData();
+        const totalStoryPoints = getAvailableTotal.calculateTotalStoryPoints(availableData);
+
+        res.status(200).json(totalStoryPoints); 
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Internal Server Error' });
