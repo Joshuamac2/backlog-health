@@ -15,7 +15,7 @@ function TotalChart() {
         const [totalAvailableResponse, totalAwaitingResponse, totalBlockedResponse] = await Promise.all([
           fetch(process.env.REACT_APP_FETCH_TOTAL_AVAILABLE),
           fetch(process.env.REACT_APP_FETCH_TOTAL_AWAITING),
-          fetch(process.env.REACT_APP_FETCH_BLOCKED)
+          fetch(process.env.REACT_APP_FETCH_TOTAL_BLOCKED)
         ]);
     
         const availableJson = await totalAvailableResponse.json();
